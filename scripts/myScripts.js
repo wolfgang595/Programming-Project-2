@@ -1,33 +1,20 @@
-const newItem = document.getElementById("newItemTxt");
-const addButton = document.getElementById("newItemBtn");
-const pendingList = document.getElementById("pending");
-const completedList = document.getElementById("completed");
+document.getElementById('startButton').addEventListener('click', function() {
+    let time = parseInt(document.getElementById('timeInput').value);
+    if (isNaN(time) || time > 60 || time <= 0) {
+        alert('Please enter a valid number between 1 and 60.');
+        return;
+    }
 
-addButton.addEventListener("click", addItemFunc);
-function addItemFunc(){ 
-    if(newItem.value !=""){
-        const addItem = document.createElement("li")
-        addItem.innerHTML = newItem.value
-        pendingList.appendChild(addItem)
-        newItem.value = ""
-    }
-    else {
-        alert("Please provide an item to add to the to-do list.")
-    }
-}
-
-pendingList.addEventListener("click", function(){ pendingEventFunc(event)})
-function pendingEventFunc(event){
-    if(event.target.localName == "li"){
-        const item = event.target
-        completedList.appendChild(item)
-    }
-}
-
-completedList.addEventListener("click",function(){completedEventFunc(event)})
-function completedEventFunc(event){
-    if(event.target.localName == "li"){
-        const item = event.target
-        pendingList.appendChild(item)
-    }
-}
+    let timerDisplay = document.getElementById('timerDisplay');
+    let interval = setInterval(function() {
+        if (time <= 0) {
+            clearInterval(interval);
+            alert('Time is up!');
+        } else {
+            time--;
+            let minutes = Math.floor(time / 60);
+            let seconds = time % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+    }, 1000);
+});
